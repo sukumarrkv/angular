@@ -1,4 +1,4 @@
-import { Component, computed, input, Input } from "@angular/core";
+import { Component, computed, EventEmitter, input, Input, Output } from "@angular/core";
 import { DUMMY_USERS } from "../dummy-users";
 
 const randomNumber = Math.floor(Math.random() * DUMMY_USERS.length);
@@ -29,8 +29,15 @@ export class UserComponent {
   //where in we are telling that the value of avatar is not empty and will be populated with value
 
   //Below is how we take inputs using Input Decorator
-  @Input({required: true}) avatar!: String;
-  @Input({required: true}) name!: String;
+  @Input({required: true}) id!: string;
+  @Input({required: true}) avatar!: string;
+  @Input({required: true}) name!: string;
+
+  //<stirng> specifies that we are emiting data of tyep string
+  @Output() select = new EventEmitter<string>();
+
+  //Below is another way of using output function (not a signal) to emit data
+  //select = output<string>();
 
   get imagePath() {
     return 'assets/users/' + this.avatar;
@@ -47,5 +54,7 @@ export class UserComponent {
   */
 
 
-  onSelectUser() {}
+  onSelectUser() {
+    this.select.emit(this.id);
+  }
 }
