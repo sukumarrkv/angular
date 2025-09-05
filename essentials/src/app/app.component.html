@@ -6,19 +6,41 @@
 <app-header></app-header>
 <main>
   <ul id="users">
-    <li>
-      <!-- Here avatar is a property and is not an attribute. This property is used to pass value in avatar varibale define in UserComponent -->
-      <app-user [id]="users[0].id" [avatar]="users[0].avatar" [name]="users[0].name" (select)="onSelectUser($event)"></app-user>
+    @for (user of users; track user.id) {
+      <li>
+        <app-user [user]="user" (select)="onSelectUser($event)"></app-user>
+      </li>
+    }
+
+    <!-- <li *ngFor="let user of users">
+      <app-user [user]="user" (select)="onSelectUser($event)"></app-user>
+    </li> -->
+
+    <!-- <li>
+       Here avatar is a property and is not an attribute. This property is used to pass value in avatar varibale define in UserComponent
+        Below is if we are defining separate properties for inputs
+       <app-user [id]="users[0].id" [avatar]="users[0].avatar" [name]="users[0].name" (select)="onSelectUser($event)"></app-user>
+       Using objects as inputs
+       <app-user [user]="users[0]" (select)="onSelectUser($event)"></app-user>
     </li>
     <li>
-      <app-user [id]="users[1].id" [avatar]="users[1].avatar" [name]="users[1].name" (select)="onSelectUser($event)"></app-user>
+      <app-user [user]="users[1]" (select)="onSelectUser($event)"></app-user>
     </li>
     <li>
-      <app-user [id]="users[2].id" [avatar]="users[2].avatar" [name]="users[2].name" (select)="onSelectUser($event)"></app-user>
+      <app-user [user]="users[2]" (select)="onSelectUser($event)"></app-user>
     </li>
     <li>
-      <app-user [id]="users[3].id" [avatar]="users[3].avatar" [name]="users[3].name" (select)="onSelectUser($event)"></app-user>
-    </li>
+      <app-user [user]="users[3]" (select)="onSelectUser($event)"></app-user>
+    </li> -->
   </ul>
-  <app-tasks [name]="selectedUsername"></app-tasks>
+  @if (selectedUsername) {
+    <app-tasks [name]="selectedUsername"></app-tasks>
+  } @else {
+    <p id="fallback">Select a user to see the details!</p>
+  }
+  
+  <!-- <app-tasks *ngIf="selectedUsername else  fallback" [name]="selectedUsername"></app-tasks>
+  <ng-template #fallback>
+    <p id="fallback">Select a user to see the details!</p>
+  </ng-template> -->
 </main>

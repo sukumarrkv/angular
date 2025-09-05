@@ -3,6 +3,12 @@ import { DUMMY_USERS } from "../dummy-users";
 
 const randomNumber = Math.floor(Math.random() * DUMMY_USERS.length);
 
+interface User {
+  id: string,
+  avatar: string,
+  name: string
+}
+
 @Component({
   selector: 'app-user',
   standalone: true,
@@ -29,9 +35,19 @@ export class UserComponent {
   //where in we are telling that the value of avatar is not empty and will be populated with value
 
   //Below is how we take inputs using Input Decorator
-  @Input({required: true}) id!: string;
-  @Input({required: true}) avatar!: string;
-  @Input({required: true}) name!: string;
+  // @Input({required: true}) id!: string;
+  // @Input({required: true}) avatar!: string;
+  // @Input({required: true}) name!: string;
+
+  //Below is the way of using objects as inputs
+  // @Input({required: true}) user!: {
+  //   id: string,
+  //   avatar: string,
+  //   name: string
+  // }
+
+  //We can use interface to create User obejct
+  @Input({required: true}) user!: User;
 
   //<stirng> specifies that we are emiting data of tyep string
   @Output() select = new EventEmitter<string>();
@@ -40,7 +56,7 @@ export class UserComponent {
   //select = output<string>();
 
   get imagePath() {
-    return 'assets/users/' + this.avatar;
+    return 'assets/users/' + this.user.avatar;
   }
 
   //Using signal to take inputs
@@ -55,6 +71,6 @@ export class UserComponent {
 
 
   onSelectUser() {
-    this.select.emit(this.id);
+    this.select.emit(this.user.id);
   }
 }

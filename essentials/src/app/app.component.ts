@@ -13,7 +13,11 @@ import { DUMMY_USERS } from './dummy-users';
 })
 export class AppComponent {
   users = DUMMY_USERS;
-  selectedUsername!: string;
+  selectedUsername!: string; 
+  //Another way of writng above code is to use ?. By using ? we telling typescript that we are aware that this can produce undefined
+  //selectedUsername?: string;
+  //One more is to use pipes
+  //selectedUsername: string | undefined;
 
   onSelectUser(id: string) {
     //console.log("The selected user is: "+ id);
