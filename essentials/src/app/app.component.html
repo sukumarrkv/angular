@@ -34,7 +34,7 @@
     </li> -->
   </ul>
   @if (selectedUsername) {
-    <app-tasks [name]="selectedUsername"></app-tasks>
+    <app-tasks [name]="selectedUsername" [userId]="selectedUserId"></app-tasks>
   } @else {
     <p id="fallback">Select a user to see the details!</p>
   }
