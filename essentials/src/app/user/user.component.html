@@ -1,5 +1,5 @@
 <div>
-  <button (click)="onSelectUser()">
+  <button [class.active]="selected" (click)="onSelectUser()">
     <!-- This is using string interpolation, but it not recommended to use for property.
     <img src="{{ 'assets/users/'+selectedUser.avatar}}"/> -->
     <!-- Instead we should use property binding -->

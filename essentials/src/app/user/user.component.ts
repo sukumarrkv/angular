@@ -43,7 +43,7 @@ export class UserComponent {
 
   //We can use interface to create User obejct
   @Input({required: true}) user!: User;
-
+  @Input({required: true}) selected!: boolean; //this will be used to highlight the user selected
   //<stirng> specifies that we are emiting data of tyep string
   @Output() select = new EventEmitter<string>();
 
