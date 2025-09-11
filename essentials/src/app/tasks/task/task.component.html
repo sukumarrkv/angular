@@ -1,8 +1,13 @@
-<article>
-  <h2>{{task.title}}</h2>
-  <time>{{task.dueDate}}</time>
-  <p>{{task.summary}}</p>
-  <p class="actions">
-    <button (click)="handleCompleteTask()">Complete</button>
-  </p>
-</article>
+<app-card>
+  <article>
+    <h2>{{task.title}}</h2>
+    <!-- We use | to transform data to display in UI. For eg as shown below we use date pipe to transfor how
+    date should look in UI. To customize it we append with : and use specific customization you want as shown below
+    All possible customizations are present in official documentation -->
+    <time>{{task.dueDate | date: 'fullDate'}}</time>
+    <p>{{task.summary}}</p>
+    <p class="actions">
+      <button (click)="handleCompleteTask()">Complete</button>
+    </p>
+  </article>
+</app-card>

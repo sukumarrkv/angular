@@ -1,4 +1,6 @@
-<div>
+<!-- Here instead of app-card we used div before. This is way of using custom component for content-projection, where
+in we are using app-card to copy css properties of  -->
+<app-card>
   <button [class.active]="selected" (click)="onSelectUser()">
     <!-- This is using string interpolation, but it not recommended to use for property.
     <img src="{{ 'assets/users/'+selectedUser.avatar}}"/> -->
@@ -6,4 +8,4 @@
     <img [src]="imagePath" [alt]="user.name"/>
     <span>{{user.name}}</span>
   </button>
-</div>
+</app-card>

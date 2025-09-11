@@ -1,6 +1,7 @@
 import { Component, computed, EventEmitter, input, Input, Output } from "@angular/core";
 import { DUMMY_USERS } from "../dummy-users";
 import { User } from "./user.model";
+import { CardComponent } from "../shared/card/card.component";
 
 const randomNumber = Math.floor(Math.random() * DUMMY_USERS.length);
 
@@ -8,7 +9,8 @@ const randomNumber = Math.floor(Math.random() * DUMMY_USERS.length);
   selector: 'app-user',
   standalone: true,
   templateUrl: './user.component.html',
-  styleUrl: './user.component.css'
+  styleUrl: './user.component.css',
+  imports: [CardComponent]
 })
 export class UserComponent {
   //Below code is added for practice on how we display user name, image and handle events in Angular
