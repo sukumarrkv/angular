@@ -1,6 +1,7 @@
-import { Component, Output, EventEmitter, signal } from "@angular/core";
+import { Component, Output, EventEmitter, signal, Input, inject } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { NewtaskData } from "../task/task.model";
+import { TasksService } from "../tasks.service";
 
 @Component({
   selector: 'app-new-task',
@@ -10,11 +11,13 @@ import { NewtaskData } from "../task/task.model";
   imports: [FormsModule]
 })
 export class NewTaskComponent {
+  @Input({required: true}) userId! : string;
   @Output() cancel = new EventEmitter<void>();
-  @Output() add = new EventEmitter<NewtaskData>();
   enteredTitle = "";
   enteredSummary = "";
   enteredDueDate = "";
+
+  private tasksService = inject(TasksService); //Another way of instanciating object in Angular
 
   //Two way binding using signals
   // enteredTitle = signal('');
@@ -26,10 +29,12 @@ export class NewTaskComponent {
   }
 
   onSubmitClick() {
-    this.add.emit({
+    this.tasksService.addNewTask({
       title: this.enteredTitle,
       summary: this.enteredSummary,
       dueDate: this.enteredDueDate
-    });
+    }, this.userId);
+
+    this.cancel.emit();
   }
 }
