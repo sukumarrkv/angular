@@ -1,0 +1,30 @@
+@if (!investmentResults) {
+  <p class="center">Please enter data click on 'Calculate' button to show the investment results</p>
+} 
+
+@if (investmentResults) {
+    <table>
+  <thead>
+    <tr>
+      <th>Year</th>
+      <th>Value End Of Year</th>
+      <th>Interest</th>
+      <th>Total Interest</th>
+      <th>Total Amount Invested</th>
+      <th>Annual Investment</th>
+    </tr>
+  </thead>
+  <tbody>
+    @for (result of investmentResults; track result.year) {
+      <tr>
+        <td>{{result.year}}</td>
+        <td>{{result.valueEndOfYear | currency: "INR"}}</td>
+        <td>{{result.interest | currency: "INR"}}</td>
+        <td>{{result.totalInterest | currency: "INR"}}</td>
+        <td>{{result.totalAmountInvested | currency: "INR"}}</td>
+        <td>{{result.annualInvestment | currency: "INR"}}</td>
+      </tr>
+    }
+  </tbody>
+</table>
+}
