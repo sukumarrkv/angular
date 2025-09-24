@@ -1,4 +1,4 @@
-import { Component, Input } from "@angular/core";
+import { Component, input, Input } from "@angular/core";
 import { InvestmentResultsData } from "../investment-results.model";
 import { CurrencyPipe } from "@angular/common";
 
@@ -10,5 +10,8 @@ import { CurrencyPipe } from "@angular/common";
   imports: [CurrencyPipe]
 })
 export class InvestmentResultsComponent {
-  @Input({required: true}) investmentResults?: InvestmentResultsData[];
+  //@Input({required: true}) investmentResults?: InvestmentResultsData[];
+
+  //Using signals
+  investmentResults = input<InvestmentResultsData []>();
 }
