@@ -1,6 +1,7 @@
 import { Component, EventEmitter, output, Output, signal } from "@angular/core";
 import { FormsModule } from "@angular/forms";
 import { InvestmentInputData } from "../investment-input.model";
+import { InvestmentService } from "../investment.service";
 
 @Component({
   selector: 'app-user-input',
@@ -17,6 +18,7 @@ export class UserInputComponent {
   // enteredDuration = '10';
 
   //Using signals
+  /*Without using service below code is required
   calculate = output<InvestmentInputData>();
   enteredIntialInvestment = signal('0');
   enteredAnnaulInvestment = signal('0');
@@ -30,5 +32,21 @@ export class UserInputComponent {
       expectedReturn: +this.enteredExpectedReturn(),
       duration: +this.enteredDuration()
     })
+  }*/
+
+    //By using service we no longer need input and ouput decorator to pass data between componenets we can use service to od that
+  constructor(private investmentService: InvestmentService) {}
+  enteredIntialInvestment = signal('0');
+  enteredAnnaulInvestment = signal('0');
+  enteredExpectedReturn = signal('5');
+  enteredDuration = signal('10');
+
+  onUserInputFormSubmission() {
+    this.investmentService.calculateInvestmentResults({
+      initialInvestment: Number(this.enteredIntialInvestment()),
+      annualInvestment: +this.enteredAnnaulInvestment(),
+      expectedReturn: +this.enteredExpectedReturn(),
+      duration: +this.enteredDuration()
+    });
   }
 }

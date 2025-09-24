@@ -13,6 +13,7 @@ import { InvestmentResultsData } from './investment-results.model';
 })
 export class AppComponent {
 
+  /* By using service to calculate we no longer need this code.
   //Without signals
   //investmentResults?: InvestmentResultsData[];
 
@@ -42,5 +43,5 @@ calculateInvestmentResults(data: InvestmentInputData) {
 
   //this.investmentResults = annualData;
   this.investmentResults.set(annualData);
-}
+}*/
 }
