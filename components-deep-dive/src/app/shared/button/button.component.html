@@ -1,0 +1,16 @@
+ <!-- This is using input decorator -->
+ <!-- <span>
+    {{buttonData.name}}
+  </span>
+  <span class="icon">
+    {{buttonData.symbol}}
+  </span> -->
+  <span>
+    <ng-content />
+  </span>
+  <ng-content select=".icon"/>
+  <!-- To define content projection call back below is the way we need to do
+  <ng-content select=".icon">
+    Below is the text gets dispkay if no class with icon is passed bu the component using this button component
+    Fallback
+  </ng-content> -->
