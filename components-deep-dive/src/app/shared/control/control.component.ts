@@ -1,4 +1,4 @@
-import { Component, input, ViewEncapsulation } from '@angular/core';
+import { Component, ContentChild, ElementRef, inject, input, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-control',
@@ -16,4 +16,8 @@ import { Component, input, ViewEncapsulation } from '@angular/core';
 })
 export class ControlComponent {
   label = input.required<string>();
+  //private element = inject(ElementRef);
+  //TO get html elements using template variables which are projected using content projection
+  //We have contentChild method which uses signals
+  @ContentChild('input') control?: ElementRef<HTMLInputElement | HTMLTextAreaElement>;
 }
