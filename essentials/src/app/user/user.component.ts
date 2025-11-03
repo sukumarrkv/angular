@@ -46,7 +46,7 @@ export class UserComponent {
   //We can use interface to create User obejct
   @Input({required: true}) user!: User;
   @Input({required: true}) selected!: boolean; //this will be used to highlight the user selected
-  //<stirng> specifies that we are emiting data of tyep string
+  //<string> specifies that we are emiting data of type string
   @Output() select = new EventEmitter<string>();
 
   //Below is another way of using output function (not a signal) to emit data
