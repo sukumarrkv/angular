@@ -14,7 +14,7 @@ export class AuthDirective {
   private viewContainerRef = inject(ViewContainerRef);
 
   constructor() { 
-    //Effect is a special methos that gets executed whenever we change the signal inputs
+    //Effect is a special method that gets executed whenever signal input value gets changed
     effect(() => {
       if(this.authService.activePermission() === this.userType()) {
         this.viewContainerRef.createEmbeddedView(this.templateRef);
