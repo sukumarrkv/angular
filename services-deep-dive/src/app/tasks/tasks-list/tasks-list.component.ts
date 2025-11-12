@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 
 import { TaskItemComponent } from './task-item/task-item.component';
 import { TasksService } from '../tasks.service';
@@ -12,12 +12,27 @@ import { Task } from '../task.model';
   imports: [TaskItemComponent],
 })
 export class TasksListComponent {
+  private tasksService = inject(TasksService);
   selectedFilter = signal<string>('all');
-  tasks: Task[] = [];
 
-  constructor(private tasksService: TasksService) {
-    this.tasks = tasksService.tasks();
-  }
+  //The below code does work when we use the filter
+  //tasks = this.tasksService.allTasks;
+
+  //To use filter we need to compute the value of tasks based on the selected filter and tasks available
+  //this computed method gets called whenver the signals inside that method changes. So in below method
+  //if selectedFilter signal or allTasks sugnal changes the tasks will be recalculated.
+  tasks = computed(() => {
+    switch(this.selectedFilter()) {
+      case 'open':
+        return this.tasksService.allTasks().filter((task) => task.status === 'OPEN');
+      case 'in-progress':
+        return this.tasksService.allTasks().filter((task) => task.status === 'IN_PROGRESS');
+      case 'done':
+        return this.tasksService.allTasks().filter((task) => task.status === 'DONE');
+      default:
+        return this.tasksService.allTasks();
+    }
+  })
 
   onChangeTasksFilter(filter: string) {
     this.selectedFilter.set(filter);
