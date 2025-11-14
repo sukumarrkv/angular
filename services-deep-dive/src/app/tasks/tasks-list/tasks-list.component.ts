@@ -20,6 +20,7 @@ import { Task, TASK_STATUS_OPTIONS, TaskStatusOptions } from '../task.model';
 export class TasksListComponent {
   private tasksService = inject(TasksService);
   selectedFilter = signal<string>('all');
+  taskStatusOptions = inject(TASK_STATUS_OPTIONS);
   //The below code does work when we use the filter
   //tasks = this.tasksService.allTasks;
 

@@ -33,4 +33,4 @@ type TaskStatusOptions = {
   text: string
 };
 
-export const TASK_STATUS_OPTIONS = new InjectionToken<TaskStatusOptions>('task-status-option');
+export const TASK_STATUS_OPTIONS = new InjectionToken<TaskStatusOptions[]>('task-status-option');
