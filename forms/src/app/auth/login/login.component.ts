@@ -1,55 +1,55 @@
-import { afterNextRender, Component, DestroyRef, inject, viewChild } from '@angular/core';
-import { FormsModule, NgForm } from '@angular/forms';
-import { debounce, debounceTime } from 'rxjs';
+import { Component } from '@angular/core';
+import { AbstractControl, FormControl, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { of } from 'rxjs';
+
+//creating custom validator
+function mustContainQuestionMark(control: AbstractControl) {
+  if(control.value.includes('?')) {
+    return null; //valid case
+  }
+
+  return {doestNotContainQuestionMark: true} //validation fails return this custom object
+}
+
+//Async Validator: We can use this to check if email is unique
+
+function isEmailUnique(control: AbstractControl) {
+  if(control.value !== "test@gmail.com") { //In ideal world we send a http request here to check for unique
+    return of(null); 
+    //we must written observable from async validator. of is such method from rxjs we can use which quickly subscribes and return value.
+
+  }
+
+  return of({isEmailUnique: false});
+}
 
 @Component({
   selector: 'app-login',
   standalone: true,
+  imports: [ReactiveFormsModule],
   templateUrl: './login.component.html',
   styleUrl: './login.component.css',
-  imports: [FormsModule]
 })
 export class LoginComponent {
-  private form = viewChild<NgForm>('form');
-  private destroyRef = inject(DestroyRef);
-
-constructor() {
-  const savedFormData = window.localStorage.getItem('email');
-
-  if(savedFormData) {
-    const savedEmailData = JSON.parse(savedFormData);
-    const email = savedEmailData.email;
-
-    //without setTimeout we get null for .controls method below
-    //So we use setTimeout method. this is disadvantage of using template driven forms, reative forms performs better in this case
-    setTimeout(() => {
-      this.form()?.controls['email'].setValue(email);
-    }, 1)
-  }
-   
-  afterNextRender(() => {
-    const subscription = this.form()?.valueChanges?.pipe(debounceTime(500)).subscribe({
-      next: (value) => {
-        window.localStorage.setItem('email', JSON.stringify({email: value.email}))
-      }
-    })
-
-    this.destroyRef.onDestroy(() => {
-      subscription?.unsubscribe();
+  form = new FormGroup({
+    email: new FormControl('', {
+      validators: [Validators.email, Validators.required],
+      asyncValidators: [isEmailUnique]
+    }),
+    password: new FormControl('', {
+      validators: [Validators.required, Validators.minLength(6), mustContainQuestionMark]
     })
   });
-}
 
-  onSubmit(formData: NgForm) {
-    if(formData.form.invalid) {
-      return;
-    }
+  get isEmailInvalid() {
+    return this.form.controls.email.touched && this.form.controls.email.dirty && this.form.controls.email.invalid;
+  }
 
-    const enteredEmail = formData.form.value.email;
-    const enteredPassword = formData.form.value.password;
-    console.log(enteredEmail, enteredPassword);
+  get isPasswordInvalid() {
+    return this.form.controls.password.touched && this.form.controls.password.dirty && this.form.controls.password.invalid;
+  }
 
-    formData.form.reset();
-    //We have many other methods in form object which can be helpful
+  onSubmit() {
+    console.log(this.form);
   }
 }
