@@ -27,6 +27,9 @@
         formControlName="confirmPassword"
       />
     </div>
+    @if (getDoesPasswordsMatch()) {
+      <p class="control-error">Passwords do not match</p>
+    }
   </div>
 
   <hr />
@@ -152,4 +155,8 @@
     <button type="reset" class="button button-flat" (click)="onReset()">Reset</button>
     <button type="submit" class="button">Sign up</button>
   </p>
+
+  @if (signupForm.touched && signupForm.invalid) {
+    <p class="control-error">Invalid form - Please check input form data.</p>
+  }
 </form>

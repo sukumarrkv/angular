@@ -1,6 +1,31 @@
 import { Component } from '@angular/core';
-import { FormControl, FormGroup, ɵInternalFormsSharedModule, ReactiveFormsModule, Validators, FormArray } from '@angular/forms';
+import { FormControl, FormGroup, ɵInternalFormsSharedModule, ReactiveFormsModule, Validators, FormArray, AbstractControl } from '@angular/forms';
 
+function doesPasswordMatch(control: AbstractControl) {
+  const password = control.get('password')?.value;
+  const confirmPassword = control.get('confirmPassword')?.value;
+
+  if(password === confirmPassword) {
+    return null;
+  }
+
+  return {valuesAreEqual: false};
+}
+
+//Let write a factory function for above function which can take control name and return a function
+
+function equalValues(controlName1: string, controlName2: string) {
+  return (control: AbstractControl) => {
+    const value1 = control.get(controlName1)?.value;
+    const value2 = control.get(controlName2)?.value;
+
+    if(value1 === value2) {
+      return null;
+    }
+
+    return {valuesMatch: false};
+  }
+}
 @Component({
   selector: 'app-signup',
   standalone: true,
@@ -20,7 +45,7 @@ export class SignupComponent {
       confirmPassword: new FormControl('', {
         validators:[Validators.required, Validators.minLength(6)]
       })
-    }),
+    }, {validators: [equalValues('password', 'confirmPassword')]}),
     firstName: new FormControl('', {validators: [Validators.required]}),
     lastName: new FormControl('', {validators: [Validators.required]}),
     address: new FormGroup({
@@ -39,10 +64,20 @@ export class SignupComponent {
   });
 
   onSubmit() {
+    if(this.signupForm.invalid) {
+      return;
+    }
+
     console.log(this.signupForm.value);
   }
 
   onReset() {
     this.signupForm.reset();
+  }
+
+  getDoesPasswordsMatch() {
+    return this.signupForm.controls.passwords.touched 
+           && this.signupForm.controls.passwords.dirty
+           && this.signupForm.controls.passwords.invalid;
   }
 }
