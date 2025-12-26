@@ -1,8 +1,19 @@
-import { Routes } from "@angular/router";
+import { CanMatchFn, RedirectCommand, Router, Routes } from "@angular/router";
 import { TasksComponent } from "./tasks/tasks.component";
 import { NoTaskComponent } from "./tasks/no-task/no-task.component";
 import { resolveTitle, resolveUserName, UserTasksComponent } from "./users/user-tasks/user-tasks.component";
-import { NewTaskComponent } from "./tasks/new-task/new-task.component";
+import { canLeaveWithUnSavedChanges, NewTaskComponent } from "./tasks/new-task/new-task.component";
+import { inject } from "@angular/core";
+
+const dummyCanMatch : CanMatchFn = (routes, segments) => {
+  const router = inject(Router);
+  const shouldMatch = Math.random();
+  if(shouldMatch < 1) {
+    return true;
+  }
+
+  return new RedirectCommand(router.parseUrl('/unauthorized')); //currently it navigates to NoTaskComponent
+}
 
 export const routes : Routes = [
   {
@@ -11,7 +22,8 @@ export const routes : Routes = [
   },
   {
     path: 'users/:userId',
-    component: UserTasksComponent, 
+    component: UserTasksComponent,
+    canMatch: [dummyCanMatch], 
     children: [
       {
         path: '',
@@ -24,7 +36,8 @@ export const routes : Routes = [
       },
       {
         path: 'tasks/new',
-        component: NewTaskComponent
+        component: NewTaskComponent,
+        canDeactivate: [canLeaveWithUnSavedChanges]
       }
     ],
     //Adding static data to routes. We can get this data same as getting userId above using input function
@@ -36,5 +49,9 @@ export const routes : Routes = [
       userName: resolveUserName
     },
     title: resolveTitle
+  },
+  {
+    path: '**',
+    component: NoTaskComponent
   }
 ]
