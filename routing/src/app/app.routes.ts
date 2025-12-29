@@ -1,5 +1,4 @@
 import { CanMatchFn, RedirectCommand, Router, Routes } from "@angular/router";
-import { TasksComponent } from "./tasks/tasks.component";
 import { NoTaskComponent } from "./tasks/no-task/no-task.component";
 import { resolveTitle, resolveUserName, UserTasksComponent } from "./users/user-tasks/user-tasks.component";
 import { canLeaveWithUnSavedChanges, NewTaskComponent } from "./tasks/new-task/new-task.component";
@@ -32,7 +31,10 @@ export const routes : Routes = [
       },
       {
         path: 'tasks',
-        component: TasksComponent
+        //Below is loading eagerly.
+        //component: TasksComponent,
+        //Below is loading lazily
+        loadComponent: () => import('./tasks/tasks.component').then(mod => mod.TasksComponent)
       },
       {
         path: 'tasks/new',
